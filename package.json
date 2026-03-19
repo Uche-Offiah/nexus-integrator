@@ -17,6 +17,7 @@
     "dependencies": {
         "@types/node": "^25.5.0",
         "amqplib": "^0.10.9",
+        "ioredis": "^5.10.1",
         "pino": "^10.3.1",
         "ts-node": "^10.9.2",
         "tsconfig-paths": "^4.2.0"
