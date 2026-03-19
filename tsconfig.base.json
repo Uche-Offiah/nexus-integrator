@@ -6,7 +6,8 @@
       "paths": {
         "@libs/messaging": ["libs/messaging/src"],
         "@libs/logger": ["libs/logger/src"],
-        "@libs/canonical-model": ["libs/canonical-model/src"]
+        "@libs/canonical-model": ["libs/canonical-model/src"],
+        "@libs/idempotency": ["libs/idempotency/src"]
       },
       "types": ["node"],
       "esModuleInterop": true

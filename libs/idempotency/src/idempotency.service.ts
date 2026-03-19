@@ -1,4 +1,4 @@
-import { Redis } from "ioredis";
+import Redis from "ioredis";
 
 const redis = new Redis();
 
@@ -9,4 +9,4 @@ export const isProcessed = async (eventId: string) => {
 
 export const markProcessed =async (eventId: string) => {
     await redis.set(eventId, "processed", "EX", 3600)
-}
+};
