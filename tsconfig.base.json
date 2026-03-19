@@ -4,8 +4,11 @@
       "module": "CommonJS",
       "baseUrl": ".",
       "paths": {
-        "@libs/*": ["libs/*"]
+        "@libs/messaging": ["libs/messaging/src"],
+        "@libs/logger": ["libs/logger/src"],
+        "@libs/canonical-model": ["libs/canonical-model/src"]
       },
-      "types": ["node"]
+      "types": ["node"],
+      "esModuleInterop": true
     }
   }

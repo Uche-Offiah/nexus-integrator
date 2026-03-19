@@ -1,13 +1,13 @@
 import express from "express";
 import {v4 as uuidv4} from "uuid";
-import { connectRabbitMQ } from "../../../libs/messaging/src/rabbitmq.client";
-import {publishEvent} from "../../../libs/messaging/src/publisher";
+import { connectRabbitMQ, publishEvent  } from "@libs/messaging";
+//import {publishEvent} from "../../../libs/messaging/src/publisher";
 
 const app = express();
-app.use(express.json);
+app.use(express.json());
 
 app.post("/events",async (req, res) => {
-    
+    console.log("Received request"); 
     const correlationId = (req.headers["x-correlation-id"] as string) || uuidv4();
 
     const event = {
@@ -18,16 +18,29 @@ app.post("/events",async (req, res) => {
         correlationId,
         payload: req.body.payload,
     };
-
+    
+    console.log("Before publish");
     await publishEvent ("user.created", event);
 
+    console.log("After publish");
     res.json({
         status: "published",
         correlationId,
     });
 });
 
-app.listen(3000,async () => {
+// app.listen(3000,async () => {
+//     await connectRabbitMQ();
+//     console.log("Ingestion API runnig on port 3000")
+// });
+
+const start = async () => {
     await connectRabbitMQ();
-    console.log("Ingestion API runnig on port 3000")
-});
+    console.log("RabbitMQ connected");
+  
+    app.listen(3000, () => {
+      console.log("Ingestion API running on port 3000");
+    });
+};
+  
+start();

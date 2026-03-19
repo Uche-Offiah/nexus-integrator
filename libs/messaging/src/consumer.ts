@@ -1,17 +1,22 @@
 import { getChannel } from "./rabbitmq.client";
 
-export const consume = async(routingKey: string, queue: string, handler: (msg: any) => Promise<void>) => {
+export const consume = async(   
+    queue: string,
+    routingKey: string,  
+    handler: (msg: any) => Promise<void>) => {
 
     const channel = getChannel();
 
     await  channel.assertQueue(queue, { durable: true});
 
-    await channel.bindQueue(queue, "intergration.events", routingKey);
+    await channel.bindQueue(queue, "integration.events", routingKey);
 
     channel.consume(queue, async (msg) => {
         if (!msg) return;
 
-        const content = JSON.parse(msg.connect.toString());
+        console.log("consume channel invoked", msg);
+
+        const content = JSON.parse(msg.content.toString());
 
         try {
             await handler(content);
@@ -22,5 +27,5 @@ export const consume = async(routingKey: string, queue: string, handler: (msg: a
             // requeue = false prevents infinite loops
             channel.nack(msg, false, false);
         }
-    })
-}
+    });
+};
