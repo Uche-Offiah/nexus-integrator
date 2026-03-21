@@ -24,7 +24,7 @@ export const consume = async(
             await handler(content);
             channel.ack(msg);
         }catch (err){
-            const retries = msg.Properties.headers?.["x-retry"] || 0;
+            const retries = msg.properties.headers?.["x-retry"] || 0;
             if (retries < MAX_RETRIES)
             {
                 console.log(`Retrying... attempt ${retries + 1}`)
