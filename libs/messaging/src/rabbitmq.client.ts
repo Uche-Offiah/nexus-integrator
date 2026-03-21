@@ -11,6 +11,10 @@ export const connectRabbitMQ = async () => {
         durable: true,
     });
 
+    await channel.assertExchange("integration.dlq", "topic", {
+        durable: true,
+    });
+
     return channel;
 };
 
