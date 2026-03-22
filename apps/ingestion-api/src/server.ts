@@ -11,7 +11,7 @@ app.post("/events",async (req, res) => {
     const correlationId = (req.headers["x-correlation-id"] as string) || uuidv4();
 
     const event = {
-        eventId: uuidv4(),
+        eventId: req.body.eventId || uuidv4(),
         eventType: req.body.eventType,
         source: "ingestion-api",
         timestamp: new Date().toISOString(),

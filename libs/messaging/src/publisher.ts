@@ -8,8 +8,8 @@ export const publishEvent = async (routingKey: string, message: any) => {
     console.log("Channel obtained");
 
     channel.publish(
-        "integration.events",
-        routingKey,
+        "integration.events", //exchnage
+        routingKey,           //routing key
         Buffer.from(JSON.stringify(message)),
         {persistent: true}
     );

@@ -11,9 +11,24 @@ export const connectRabbitMQ = async () => {
         durable: true,
     });
 
+    // Adding retry exchange and queue using delay queue pattern
+    await channel.assertExchange("integration.retry", "topic", {durable: true});
+    await channel.assertQueue("retry.queue",{
+        durable: true,
+        arguments: {
+            "x-message-ttl": 5000, // 5 sec delay
+            "x-dead-letter-exchange": "integration.events",
+        },
+    });
+    await channel.bindQueue("retry.queue", "integration.retry", "#");
+
+    // Adding DLQ Exchange and queue binding
     await channel.assertExchange("integration.dlq", "topic", {
         durable: true,
     });
+
+    await channel.assertQueue("dlq.queue", {durable: true, });
+    await channel.bindQueue("dlq.queue", "integration.dlq", "#");
 
     return channel;
 };
