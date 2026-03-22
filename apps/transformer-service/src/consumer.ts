@@ -8,6 +8,7 @@ const start =async () => {
 
     await consume("transform.queue", "user.created", async (event) => {
         console.log("Received event:", event);
+        console.log("Event Id:", event.eventId);
 
         // checks for duplicates before transformation
         if (await isProcessed(event.eventId)){
@@ -18,14 +19,15 @@ const start =async () => {
         const transnformed = {
             ...event,
             payload: {
-                ...event.paayload,
+                ...event.payload,
                 normalized: true,
             },
         };
 
         logger.info({
             message: "Processing event",
-            correlationId: event.correlationId
+            correlationId: event.correlationId,
+            eventId: event.eventId
         });
 
         console.log("Processed:", transnformed);

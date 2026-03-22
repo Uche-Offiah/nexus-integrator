@@ -1,9 +1,6 @@
 import { getChannel } from "./rabbitmq.client";
 
-export const consume = async(   
-    queue: string,
-    routingKey: string,  
-    handler: (msg: any) => Promise<void>) => {
+export const consume = async(queue: string, routingKey: string,  handler: (msg: any) => Promise<void>) => {
 
     const channel = getChannel();
 
@@ -15,12 +12,13 @@ export const consume = async(
 
     channel.consume(queue, async (msg) => {
         if (!msg) return;
-
-        console.log("consume channel invoked", msg);
+        //console.log("consume channel invoked", msg);
 
         const content = JSON.parse(msg.content.toString());
 
         try {
+            throw new Error("Test Failure");
+            
             await handler(content);
             channel.ack(msg);
         }catch (err){
@@ -30,7 +28,7 @@ export const consume = async(
                 console.log(`Retrying... attempt ${retries + 1}`)
 
                 channel.publish(
-                    "integration.events",
+                    "integration.retry",
                     routingKey,
                     Buffer.from(JSON.stringify(content)),
                     {
@@ -51,7 +49,7 @@ export const consume = async(
             console.error("Processing failed", err);
 
             // requeue = false prevents infinite loops
-            channel.nack(msg, false, false);
+            //channel.nack(msg, false, false);
         }
     });
 };
