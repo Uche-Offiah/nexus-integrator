@@ -10,6 +10,8 @@ app.post("/events",async (req, res) => {
     console.log("Received request"); 
     const correlationId = (req.headers["x-correlation-id"] as string) || uuidv4();
 
+    const user = (req as any).user;
+
     const event = {
         eventId: req.body.eventId || uuidv4(),
         eventType: req.body.eventType,
@@ -17,6 +19,7 @@ app.post("/events",async (req, res) => {
         timestamp: new Date().toISOString(),
         correlationId,
         payload: req.body.payload,
+        user,
     };
     
     console.log("Before publish");
