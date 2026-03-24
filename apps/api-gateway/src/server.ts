@@ -1,15 +1,17 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import { createProxyMiddleware } from "http-proxy-middleware";
+import dotenv from "dotenv";
+
+
 
 const app = express();
-
+dotenv.config();
 //app.use(express.json());
+const JWT_SECRET = process.env.JWT_SECRET;
 
-const JWT_SECRET = "supersecret";
 
 // Authentication Middelware
-
 const authenticate = (req: any, res: any, next: any) =>{
     const authHeader = req.headers.authorization;
 
@@ -37,13 +39,20 @@ app.post("/auth/login", express.json(), (req, res) => {
     res.json({token})
 });
 
+// app.use("/events", (req, res, next) => {
+//     console.log("Gateway hit:", req.method, req.originalUrl);
+//     next();
+// });
+
 app.use(
     "/events",
     authenticate,
     createProxyMiddleware({
-        target: "http://localhost:3000/events",
+        target: "http://localhost:3000",
         changeOrigin: true,
-        ignorePath: false,
+        pathRewrite: (path, req) => {
+            return "/events" + path;
+        },
     })
 );
 
