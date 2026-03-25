@@ -16,9 +16,7 @@ export const consume = async(queue: string, routingKey: string,  handler: (msg: 
 
         const content = JSON.parse(msg.content.toString());
 
-        try {
-            throw new Error("Test Failure");
-            
+        try {       
             await handler(content);
             channel.ack(msg);
         }catch (err){
