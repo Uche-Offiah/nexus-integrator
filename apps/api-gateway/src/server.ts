@@ -39,20 +39,19 @@ app.post("/auth/login", express.json(), (req, res) => {
     res.json({token})
 });
 
+//Use to debug proxy routing issues
 // app.use("/events", (req, res, next) => {
 //     console.log("Gateway hit:", req.method, req.originalUrl);
 //     next();
 // });
 
 app.use(
-    "/events",
     authenticate,
     createProxyMiddleware({
         target: "http://localhost:3000",
         changeOrigin: true,
-        pathRewrite: (path, req) => {
-            return "/events" + path;
-        },
+        pathFilter: (path) => path.startsWith("/events"),
+       
     })
 );
 
