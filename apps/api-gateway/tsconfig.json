@@ -1,6 +1,8 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "module": "commonjs"
-    }
+      "outDir": "../../dist/apps/api-gateway",
+      "composite": true
+    },
+    "include": ["src"]
 }

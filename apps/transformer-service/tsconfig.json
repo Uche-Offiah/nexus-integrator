@@ -1,6 +1,13 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "module": "Commonjs"
-    }
-}
+      "outDir": "../../dist/apps/transform-service",
+      "composite": true
+    },
+    "include": ["src"],
+    "references": [
+        { "path": "../../libs/messaging" },
+        { "path": "../../libs/logger" },
+        { "path": "../../libs/idempotency" }
+    ]
+  }

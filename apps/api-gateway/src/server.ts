@@ -50,8 +50,7 @@ app.use(
     createProxyMiddleware({
         target: "http://localhost:3000",
         changeOrigin: true,
-        pathFilter: (path) => path.startsWith("/events"),
-       
+        pathFilter: (path) =>  path.startsWith("/events"),   
     })
 );
 

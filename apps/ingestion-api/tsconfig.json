@@ -1,6 +1,12 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-        "module": "Commonjs"
-    }
-}
+      "outDir": "../../dist/apps/ingestion-api",
+      "composite": true
+    },
+    "include": ["src"],
+    "references": [
+        { "path": "../../libs/logger" },
+        { "path": "../../libs/messaging" }
+    ]   
+  }

@@ -14,3 +14,38 @@ services:
     container_name: nexus-redis
     ports:
       - "6379:6379"
+
+  ingestion-api:
+    build:
+      context: .
+      dockerfile: apps/ingestion-api/Dockerfile
+    ports:
+      - "3000"
+    depends_on:
+      - rabbitmq
+      - redis
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq
+      - REDIS_URL=redis://redis:6379
+
+  transformer-service:
+    build:
+      context: .
+      dockerfile: apps/transformer-service/Dockerfile
+    depends_on:
+      - rabbitmq
+      - redis
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq
+      - REDIS_URL=redis://redis:6379
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: apps/api-gateway/Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - ingestion-api
+    environment:
+      - JWT_SECRET=supersecret

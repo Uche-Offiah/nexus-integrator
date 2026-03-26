@@ -1,0 +1,14 @@
+{
+    "files": [],
+    "references": [
+
+      { "path": "./libs/messaging" },
+      { "path": "./libs/logger" },
+      { "path": "./libs/idempotency" },
+
+
+      { "path": "./apps/ingestion-api" },
+      { "path": "./apps/transformer-service" },
+      { "path": "./apps/api-gateway" },
+    ]
+  }

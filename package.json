@@ -1,6 +1,6 @@
 {
     "name": "nexus-integrator",
-    "private": "true",
+    "private": true,
     "workspaces": [
         "apps/*",
         "libs/*"
@@ -9,10 +9,14 @@
         "dev": "concurrently \"npm:dev:*\"",
         "dev:api": "npm run dev -w apps/ingestion-api",
         "dev:transformer": "npm run dev -w apps/transformer-service",
-        "dev:gateway": "npm run dev -w apps/api-gateway"
+        "dev:gateway": "npm run dev -w apps/api-gateway",
+        "build": "tsc -b",
+        "clean": "rimraf dist"
     },
     "devDependencies": {
+        "@types/amqplib": "^0.10.8",
         "concurrently": "^8.2.0",
+        "rimraf": "^5.0.0",
         "typescript": "^5.3.0"
     },
     "dependencies": {
