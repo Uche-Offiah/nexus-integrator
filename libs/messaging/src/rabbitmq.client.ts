@@ -1,9 +1,12 @@
-import amqp from "amqplib";
+import {connect, Channel, Connection } from "amqplib";
 
-let channel: amqp.Channel;
+let channel: Channel;
+
+const rabbitmq_con_string = process.env.RABBITMQ_URL || "amqp://admin:admin@localhost:5672"
+console.log("rabbitmq_con_string: ", rabbitmq_con_string)
 
 export const connectRabbitMQ = async () => {
-    const connection = await amqp.connect("amqp://admin:admin@localhost:5672");
+    const connection = await connect(rabbitmq_con_string);
 
     channel = await connection.createChannel();
 
