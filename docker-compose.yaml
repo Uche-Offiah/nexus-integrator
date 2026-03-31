@@ -20,12 +20,12 @@ services:
       context: .
       dockerfile: apps/ingestion-api/Dockerfile
     ports:
-      - "3000"
+      - "3000:3000"
     depends_on:
       - rabbitmq
       - redis
     environment:
-      - RABBITMQ_URL=amqp://rabbitmq
+      - RABBITMQ_URL=amqp://rabbitmq:5672
       - REDIS_URL=redis://redis:6379
 
   transformer-service:
@@ -36,7 +36,7 @@ services:
       - rabbitmq
       - redis
     environment:
-      - RABBITMQ_URL=amqp://rabbitmq
+      - RABBITMQ_URL=amqp://rabbitmq:5672
       - REDIS_URL=redis://redis:6379
 
   api-gateway:

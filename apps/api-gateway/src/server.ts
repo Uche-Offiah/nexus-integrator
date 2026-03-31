@@ -48,7 +48,7 @@ app.post("/auth/login", express.json(), (req, res) => {
 app.use(
     authenticate,
     createProxyMiddleware({
-        target: "http://localhost:3000",
+        target: "http://ingestion-api:3000",
         changeOrigin: true,
         pathFilter: (path) =>  path.startsWith("/events"),   
     })
