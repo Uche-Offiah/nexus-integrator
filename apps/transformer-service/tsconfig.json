@@ -1,7 +1,7 @@
 {
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
-      "outDir": "../../dist/apps/transform-service",
+      "outDir": "../../dist/apps/transformer-service",
       "composite": true
     },
     "include": ["src"],

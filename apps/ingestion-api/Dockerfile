@@ -1,17 +1,22 @@
-FROM node:18-alpine
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY apps ./apps
+COPY libs ./libs
+COPY tsconfig*.json ./
+
+RUN npm install
+RUN npm run build
+
+FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-COPY tsconfig.base.json ./
+COPY --from=builder /app/node_modules ./node_modules
 
-COPY apps/ingestion-api ./apps/ingestion-api
-COPY libs ./libs
+COPY --from=builder /app/package*.json ./
 
-RUN npm install
+COPY --from=builder /app/dist ./dist
 
-RUN npm run build
-
-EXPOSE 3000
-
-CMD ["node", "dist/apps/ingestion-api/server.js"]
+CMD ["node", "dist/apps/ingestion-api/src/server.js"]

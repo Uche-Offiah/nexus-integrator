@@ -1,6 +1,6 @@
-import { connectRabbitMQ, consume } from "@libs/messaging";
-import { logger } from "@libs/logger"
-import { isProcessed, markProcessed} from "@libs/idempotency";
+import { connectRabbitMQ, consume } from "../../../libs/messaging";
+import { logger } from "../../../libs/logger"
+import { isProcessed, markProcessed} from "../../../libs/idempotency";
 
 const start =async () => {
     

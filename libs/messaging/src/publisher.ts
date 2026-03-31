@@ -1,4 +1,4 @@
-import { getChannel } from "@libs/messaging";
+import { getChannel } from "./rabbitmq.client";
 
 export const publishEvent = async (routingKey: string, message: any) => {
     console.log("Publishing event...");

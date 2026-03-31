@@ -1,25 +1,34 @@
-# Use node base image
-FROM node:18-alpine
+# ---------- BUILD STAGE ----------
+FROM node:20-alpine AS builder
 
-# Set working directory
 WORKDIR /app
 
-# Copy root package files
-COPY package*.json ./
-COPY tsconfig.base.json ./
-
-# Copy app source
-COPY apps/api-gateway ./apps/api-gateway
+# Copy only necessary files first (better caching)
+COPY package.json package-lock.json ./
+COPY apps ./apps
 COPY libs ./libs
+COPY tsconfig*.json ./
 
-# Install dependencies
 RUN npm install
 
-# Build Typescript
+# Copy full project
+#COPY . .
+
+# Build all services
 RUN npm run build
 
-# Expose port
+# ---------- RUNTIME STAGE ----------
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy only built output + deps
+COPY --from=builder /app/node_modules ./node_modules
+
+COPY --from=builder /app/package*.json ./
+
+COPY --from=builder /app/dist ./dist
+
 EXPOSE 4000
 
-# Start app
-CMD ["node", "dist/apps/api-gateway/server.js"]
+CMD ["node", "dist/apps/api-gateway/src/server.js"]
